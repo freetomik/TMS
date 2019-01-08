@@ -34,11 +34,6 @@ extern cv::Mat getGradientMagnitude(const cv::Mat &src);
 
 extern cv::Mat getGradientMagnitudeFromOneLayer(const cv::Mat &src);
 
-extern cv::Mat getDetailLayer(const cv::Mat &orig, 
-							  const cv::Mat &base, 
-							  int rows, 
-							  int cols);
-							  
 extern cv::Mat getWeightsFromBaseLayer(const cv::Mat &gradient, 
 									   int rows, 
 									   int cols,
@@ -55,9 +50,5 @@ extern cv::Mat getDetailControl(const cv::Mat &base,
 						 int cols);
 						 
 extern cv::Mat stochasticOptimizationForGetSigma(cv::Mat base, cv::Mat original, int rows, int cols, int counter);
-
-extern cv::Mat getSumOfCosts(cv::Mat r, cv::Mat g, cv::Mat b, int rows, int cols); 
-
-extern cv::Mat getSumOfCostsForSigmaOptimization(cv::Mat r, cv::Mat g, cv::Mat b, int rows, int cols); 
 
 extern cv::Mat myOwn2DFilter(cv::Mat image, cv::Mat sigmaMap, int rows, int cols);

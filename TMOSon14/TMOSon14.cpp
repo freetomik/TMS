@@ -162,9 +162,9 @@ int TMOSon14::Transform()
      * Phase 3 -- getting final base layer
      **/
      
-    /*cv::Mat sumOfCostsBase = getSumOfCostsForSigmaOptimization(basePhase1Chan[2], basePhase2Chan[1], basePhase2Chan[0], height, width);
+    /*cv::Mat sumOfCostsBase = basePhase1Chan[2] + basePhase2Chan[1] + basePhase2Chan[0];
 	
-	cv::Mat sumOfCostsOriginal = getSumOfCostsForSigmaOptimization(r, g, b, height, width);
+	cv::Mat sumOfCostsOriginal = r + g + b;
 	std::cout << "Base Phase3" << std::endl;*/
 	//cv::Mat sigmaMap = optimizeForSigma(height, width, sumOfCostsOriginal/255.0, sumOfCostsBase/255.0, optim1Iteration);
 	/////cv::Mat sigmaMap = stochasticOptimizationForGetSigma(sumOfCostsBase/256.0, sumOfCostsOriginal, height, width, 50000);
@@ -173,12 +173,16 @@ int TMOSon14::Transform()
 	cv::Mat basePhase3G = myOwn2DFilter(g, sigmaMap, height, width);
 	cv::Mat basePhase3B = myOwn2DFilter(b, sigmaMap, height, width);*/
 	std::cout << "Base phase -- COMPLETED" << std::endl;
-     
-    cv::Mat detailLayerR = getDetailLayer(r, basePhase2Chan[2], height, width);
-    cv::Mat detailLayerG = getDetailLayer(g, basePhase2Chan[1], height, width);
-    cv::Mat detailLayerB = getDetailLayer(b, basePhase2Chan[0], height, width);
-    cv::Mat sumOfDetail = getSumOfCosts(detailLayerR, detailLayerG, detailLayerB, height, width);
-    cv::Mat sumOfBase = getSumOfCosts(basePhase2Chan[0], basePhase2Chan[1], basePhase2Chan[2], height, width);
+	 
+	cv::Mat &basePhase2R = basePhase2Chan[2];
+	cv::Mat &basePhase2G = basePhase2Chan[1];
+	cv::Mat &basePhase2B = basePhase2Chan[0];
+	cv::Mat detailLayerR = r - basePhase2R;
+	cv::Mat detailLayerG = g - basePhase2G;
+	cv::Mat detailLayerB = b - basePhase2B;
+
+	cv::Mat sumOfDetail = detailLayerR + detailLayerG + detailLayerB;
+	cv::Mat sumOfBase = basePhase2R + basePhase2G + basePhase2B;
 
     std::vector<cv::Mat> array_to_merge1;
 
@@ -236,4 +240,3 @@ int TMOSon14::Transform()
 	pDst->Convert(TMO_RGB);
 	return 0;
 }
-

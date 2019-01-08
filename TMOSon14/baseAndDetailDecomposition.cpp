@@ -231,23 +231,6 @@ cv::Mat minimizeL0GradientSecondFaze(const cv::Mat &src, cv::Mat lambdaMatrix1, 
 }
 
 /*
- * Function for getting detail layer from base layer
- **/
-cv::Mat getDetailLayer(const cv::Mat &orig, const cv::Mat &base, int rows, int cols) 
-{		
-		cv::Mat detailLayer;
-		detailLayer = cv::Mat::zeros(rows, cols, CV_32F);
-
-		for(int j=0; j<rows; j++){
-            for(int i=0; i<cols; i++){
-                detailLayer.at<float>(j, i) = orig.at<float>(j, i) - base.at<float>(j, i);
-            }
-        }
-        
-        return detailLayer;
-}
-
-/*
  * Function for getting weights for detail maximilization
  **/
 cv::Mat getWeightsFromBaseLayer(const cv::Mat &gradient, int rows, int cols, int r){
@@ -447,45 +430,6 @@ cv::Mat stochasticOptimizationForGetSigma(cv::Mat base, cv::Mat original, int ro
         return tmpLayer;
 }
 
-
-/*
- * Function for getting sum of costs for image optimizing
- **/
-cv::Mat getSumOfCostsForSigmaOptimization(cv::Mat r, cv::Mat g, cv::Mat b, int rows, int cols) 
-{
-	cv::Mat sum;
-	sum = cv::Mat::zeros(rows,cols, CV_32F);
-	
-	for (int j = 0; j < rows; ++j) 
-	{
-		for (int i = 0; i < cols; ++i) 
-		{
-			sum.at<float>(j, i) = r.at<float>(j, i) + g.at<float>(j, i) + b.at<float>(j, i); 
-		}
-	}
-	
-	return sum;
-}
-
-/*
- * Function for getting sum of costs for image optimizing
- **/
-cv::Mat getSumOfCosts(cv::Mat r, cv::Mat g, cv::Mat b, int rows, int cols) 
-{
-	cv::Mat sum;
-	sum = cv::Mat::zeros(rows,cols, CV_32F);
-	
-	for (int j = 0; j < rows; ++j) 
-	{
-		for (int i = 0; i < cols; ++i) 
-		{
-			sum.at<float>(j, i) = r.at<float>(j, i) + g.at<float>(j, i) + b.at<float>(j, i); 
-		}
-	}
-	
-	return sum;
-}
-
 /*
  * Convolution 2D filter with different sigma kernel for each pixel
  **/
@@ -542,4 +486,3 @@ cv::Mat myOwn2DFilter(cv::Mat image, cv::Mat sigmaMap, int rows, int cols)
 
 	return filteredImage;
 }
-
